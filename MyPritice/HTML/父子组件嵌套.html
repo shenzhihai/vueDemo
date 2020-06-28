@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../JS/Vue-2.6.11.js"></script>
+</head>
+<body>
+     <div id="app">
+         <h3>{{msg}}</h3>
+      </div>
+      <script>
+          let vd=Vue.extend({
+              template:"tpl",
+          })
+          let vm = new Vue({
+              el:"#app",
+              data:{},
+              methods:{},
+          })
+      </script>
+</body>
+</html>

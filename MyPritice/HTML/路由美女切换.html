@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .myStyle{
+            color:#cbc;
+            font-weight:900;
+        }
+        button{
+            cursor:pointer;
+        }
+        .v-enter,
+        .v-leave-to{
+            opacity:0;
+            transform: translateX(300px);
+        }
+        .v-enter-active,
+        .v-leave-active{
+            transition: all 0.9s ease-out;
+        }
+    </style>
+    <script src="../JS/Vue-2.6.11.js"></script>
+    <script src="../JS/vue-router-3.1.6.js"></script>
+<body>
+     <div id="app">
+         <router-link to="/login" tag="button">登录组件</router-link>
+         <router-link to="/register" tag="button">注册组件</router-link>
+         <transition mode="out-in">
+            <router-view></router-view>
+         </transition>
+      </div>
+      <script>
+          let login={
+              template:"<img src=\"../images/1.jpg\" height=\"710\" width=\"1350\"/>"
+          }
+          let register={
+              template:"<img src=\"../images/28.jpg\" height=\"710\" width=\"1350\"/>"
+          }
+          let myRouter=new VueRouter({
+              routes:[
+                  {path:"/",redirect:"/login"},
+                  {path:"/login",component:login},
+                  {path:"/register",component:register},
+              ],
+              linkActiveClass:"myStyle",
+          })
+          let vm = new Vue({
+              el:"#app",
+              router:myRouter,
+          })
+      </script>
+</body>
+</html>

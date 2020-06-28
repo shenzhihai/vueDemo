@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--
+    需求：
+        1.router-link 会默认渲染为一个 a 标签,会带有蓝色字体的样式,现在要去掉这个蓝色的样式,使浏览器一打开时显示字体为黑色
+        2.鼠标移入 "登录" 或 "注册" 上面时,将鼠标指针变成小手状
+    分析：
+        1."登录" 或 "注册" 是由 router-link 标签所控制的,我们都知道 router-link 会默认渲染为一个 a 标签,a 标签字体默认是蓝色的,
+        我们还不能通过 router-link-active 这个类来修改,因为这个类是点击 "登录" 或 "注册" 后才应用的样式,所以不能使用,那么我们可以
+        router-link 的 tag 属性修改默认显示的标签,此例中我们将默认显示的标签修改为 span 标签,这样浏览器一打开字体就显示为黑色,这就
+        解决了第一个需求
+        2.此例中我们将默认显示的标签修改为 span 标签,这样我们可以通过 :hover 伪类选择器为 span 标签设置手状样式,注意：不能使用 router-link
+        标签,因为 router-link 默认情况下将标签解析为 a 标签,而我们修改了默认解析标签为 span 标签,所以设置样式是应该使用 span 标签.
+    -->
+    <style>
+        .router-link-active{
+            color:#bfa;
+            font-weight:900;
+            text-decoration:underline;
+        }
+        span:hover{
+            cursor: pointer;
+        }
+    </style>
+    <script src="../JS/Vue-2.6.11.js"></script>
+    <script src="../JS/vue-router-3.1.6.js"></script>
+</head>
+<body>
+     <div id="app">
+         <router-link to="/login" tag="span">登录</router-link>
+         <router-link to="/register" tag="span">注册</router-link>
+         <router-view></router-view>
+      </div>
+      <script>
+          let login = {
+              template:"<h1>登录组件</h1>"
+          }
+          let register = {
+              template:"<h1>注册组件</h1>"
+          }
+          let myRouter=new VueRouter({
+              routes:[
+                  {path:"/",redirect:"/login"},
+                  {path:"/login",component:login},
+                  {path:"/register",component:register},
+              ]
+          })
+          let vm = new Vue({
+              el:"#app",
+              router:myRouter,
+          })
+      </script>
+</body>
+</html>

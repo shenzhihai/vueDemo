@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../JS/Vue-2.6.11.js"></script>
+        <!--总结：
+            在 Vue 实例对象里都可以放入的平级的元素：
+                el: 表示要控制的区域
+                data:表示要渲染在页面上的数据
+                methods:表示将所有的方法放在此处。
+                computed:这个属性表示计算属性，可以将所需要的计算方法放在此处。
+                filters:这个属性用来定义私有(局部)过滤器.
+                watch:这个属性用来做监听事件的,如果要监听事件的改变,可以将事件方法写在这里
+                directives:这个属性是用来自定义私有(局部)指令的,注意：这里的 directives 是加上了 s 的
+                components:这个属性是用来自定义私有(局部)组件的,注意：这里的 components 是加上了 s 的
+                router:这个属性是监听路由对象身上 URL 地址的改变的,该属性后面放入的是一个路由对象
+            跟 Vue 实例平级的函数：
+                //自定义全局指令
+                1.Vue.directive("指令名称",{
+                    bind:function(el){
+                        具体操作;
+                    }
+                    inserted:function(el){
+                        具体操作;
+                    }
+                    update:function(el){
+                        具体操作;
+                    })
+                //自定义全局组件
+                2.Vue.component("组件名称",{
+                     template:"需要渲染在页面上的内容";
+                     data:function(){
+                        return {
+                            需要返回的内容
+                        }
+                     }
+                  })
+                 //自定义路由对象
+                 let 路由对象变量名 = new VueRouter({
+                    route://单个匹配规则
+                    routes:[]//这里放入多个匹配规则
+                 })
+         -->
+</head>
+<body>
+    <div id="app">
+
+    </div>
+    <script>
+        //定义全局过滤器
+        Vue.filter("过滤器名称",function(要处理的数据){
+            //具体数据的处理过程
+        })
+        //定义全局组件
+        Vue.component("组件名",{//这是一个对象
+            template:"<标签>{{要显示在页面上数据}}</标签>",//定义要显示在页面上的数据
+            data:function(){//这是一个函数
+                return {//要返回的数据是一个对象
+                    //要返回的结果
+                }
+            }
+        })
+        //自定义全局指令
+        Vue.directive("指令名称",{
+            bind:function(el){ }//该函数作用为:每当指令绑定到元素上的时候，会立即执行这个 bind 函数，且只执行一次
+            inserted:function(el){ }//该函数作用为：表示元素插入到 DOM 中的时候，会执行 inserted 函数，且只执行一次。
+            update(el):function(el){ }//该函数作用为：当数据更新的时候，会执行 update 函数，可能触发多次
+        })
+        //自定义路由对象
+        let 路由对象变量名 = new VueRouter({
+            route://单个匹配规则
+            routes:[]//这里放入多个匹配规则
+        })
+        let vm = new Vue({
+            el:"#app",
+            data:{
+                <!-- 放入渲染进页面的数据 -->
+            },
+            methods:{
+                <!-- 放入一些方法 -->
+            },
+            computed:{
+                <!-- 表示计算属性,可放入一些用于计算的方法 -->
+            },
+            filters:{
+                <!--表示定义私有过滤器-->
+            },
+            watch{
+                <!--如果要监听事件的改变,可以将事件方法写在这里-->
+            },
+            /*自定义私有指令*/
+            directives:{
+                '私有指令名称':{
+                    //钩子函数
+                }
+            },
+            /*自定义私有组件*/
+            components:{
+                "组件名称":{
+                    template:"将来要显示在页面上的HTML内容"
+                }
+            },
+            router:/*这里写入路由对象*/
+        })
+    </script>
+</body>
+</html>

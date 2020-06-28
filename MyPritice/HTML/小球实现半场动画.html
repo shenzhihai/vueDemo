@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--
+        知识区：
+            1.动画钩子函数(像beforeEnter/enter/afterEnter等)的第一个参数 el 表示”要执行动画的那个 DOM 元素“,是个原生的 JS DOM 对象,
+            我们可以认为,el 是通过 document.getElementById("") 的方式获取到的原生 JS DOM 对象.
+            2.动画钩子函数释义：
+                beforeEnter 钩子函数：表示 “动画入场之前的状态”,此时,动画尚未开始,可以在 beforeEnter 中设置元素开始动画之前的起始样式.
+                enter 钩子函数：表示 “动画开始之后的状态”,这里可以设置小球完成动画之后的结束状态
+                afterEnter 钩子函数：表示 “动画完成之后会调用 afterEnter 钩子函数”.
+            3.el.offsetWidth 这句代码没有实际的作用,但是如果不写的话,就无法实现动画效果;我们可以这样理解：程序员在 enter 钩子函数中写入了
+            动画效果,但是浏览器并没有解析并执行动画效果,于是可以认为 el.offsetWidth 会强制浏览器进行刷新并执行动画;其实并不是只有 offsetWidth
+            才能执行动画效果,只要是和 offset 相关内容都可以,比如：el.offsetLeft/el.offsetRight/el.offsetHeight 等都可以实现动画效果.
+            4.enter 钩子函数的第二个参数 done ：这里的 done 其实就是 afterEnter 这个钩子函数,也就是说 “done 是 afterEnter 函数的引用”,
+            由于我们的目的是让小球动画结束之后隐藏,于是在 afterEnter 函数中进行取反,但是如果不加第二个参数 done 和 "显示调用done()函数“,则
+            小球的隐藏效果会有延迟,如果我们添加上了第二个参数 done 和 “显示调用done()函数” 则小球就会在动画结束后立即隐藏掉.
+    -->
+    <style>
+        .ball{
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background-color: blue;
+        }
+    </style>
+    <script src="../JS/Vue-2.6.11.js"></script>
+</head>
+<body>
+     <div id="app">
+         <input type="button" value="快到碗里来" @click="flag=!flag">
+         <transition
+         @before-enter="beforeEnter"
+         @enter="enter"
+         @after-enter="afterEnter">
+             <div class="ball" v-show="flag"></div>
+         </transition>
+      </div>
+      <script>
+          let vm = new Vue({
+              el:"#app",
+              data:{
+                  flag:false,
+              },
+              methods:{
+                  beforeEnter(el){
+                      el.style.transform="translate(0,0)";
+                  },
+                  enter(el,done){
+                      el.offsetWidth;
+                      el.style.transform="translate(1024px,500px)";
+                      el.style.transition="all 1s ease";
+                      done();
+                  },
+                  afterEnter(el){
+                      this.flag=!this.flag;
+                  }
+              },
+          })
+      </script>
+</body>
+</html>

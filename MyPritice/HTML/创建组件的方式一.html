@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../JS/Vue-2.6.11.js"></script>
+</head>
+<body>
+      <div id="app">
+          <my-con></my-con>
+       </div>
+       <script>
+           let con = Vue.extend({
+               template:"<h1>你好呀,乳头</h1>"
+           })
+           Vue.component("myCon",con);
+           let vm = new Vue({
+               el:"#app",
+           })
+       </script>
+</body>
+</html>

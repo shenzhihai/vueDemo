@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../JS/Vue-2.6.11.js"></script>
+    <!--
+     需求：
+        1.自定义指令 v-focus,使其指令添加进文本框之后,一刷新页面,该文本框自动获取焦点
+        2.自定义指令 v-color,使其指令添加进文本框之后,在文本框中输入内容字体变为蓝色
+     目的：
+        比较自定义指令 directive 第二个参数这个对象中 inserted 和 bind 钩子函数的不同用法
+     分析：
+        1.在以下例子中自定义指令有三个代码段,其中 代码段一 和 代码段二 是一次比较,代码段一 和 代码段三 是另一次比较
+        2.我们先分析代码段一 和 代码段二 的比较(注：此两段代码比较时应先注销掉其中一段代码):由于实现文本框自动获取焦点
+          这一步是需要将元素插入到 DOM 中去的,而 inserted 钩子函数的执行时机就是在元素插入到 DOM 中去才会执行此函数,
+          符合该函数的执行时机,所以使用 inserted 函数能够使其自动获取焦点,满足其需求,而 bind 函数的执行时元素还没有插
+          入到 DOM 中去,所以调用 focus 方法没有作用.
+        3.我们在来分析代码段一 和 代码段三的比较：inserted 方法的执行时机是当元素插入到 DOM 中去后才能调用 inserted
+          方法,它注重的是操作 JS 的行为,所以只要是 JS 的行为操作应当放在 inserted 方法中进行;而 bind 函数执行时机是
+          不管元素有没有插入到 DOM 中都会执行 bind 函数,它注重的是操作 JS 样式操作,所以只要是 JS 的样式操作都应道放在
+          bind 函数中去执行
+     结论：
+        1.自定义指令给元素添加样式,只要通过指令绑定给了元素,不管这个元素有没有被插入到页面中,在这个元素身上肯定有
+          了一个内联样式,将来元素肯定会显示到页面中,这时候,浏览器的渲染引擎必然会解析该样式,并应用到这个元素身上
+        2.在元素刚绑定了指令的时候,还没有插入到 DOM 中,这时候调用 focus 方法没有作用,因为一个元素只有插入到 DOM
+          身上之后,才能获取焦点,使其 focus() 方法生效.
+        3.和 JS 行为有关的操作,最好放在 inserted 中去执行,以此来防止 JS 行为不生效;和样式相关的操作,一般都可以
+          放在 bind 中去执行
+    -->
+</head>
+<body>
+    <div id="app">
+        Name&nbsp:&nbsp<input type="text" v-focus v-color>
+    </div>
+    <script>
+        //代码段一
+        Vue.directive("focus",{
+            inserted:function(el){
+                el.focus();
+            }
+        })
+        //代码段二
+        /*Vue.directive("focus",{
+            bind:function(el){
+                el.focus();
+            }
+        })*/
+        //代码段三
+        Vue.directive("color",{
+            bind:function(el){
+                el.style.color = "blue";
+            }
+        })
+        let customCommand = new Vue({
+            el:"#app",
+        })
+    </script>
+</body>
+</html>

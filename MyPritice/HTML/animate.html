@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .color{
+            width: 100px;
+            height: 100px;
+            background-color: skyblue;
+        }
+    </style>
+    <script src="../../js/Vue-2.6.11.js"></script>
+    <link rel="stylesheet" href="../../CSS/animate.min.css">
+</head>
+<body>
+    <div id="app">
+        <button @click="toggle">切换</button>
+        <transition enter-active-class="animated bounceInLeft" leave-active-class="animated bounceInRight">
+            <div class="color" v-if="isShow"></div>
+        </transition>
+    </div>
+    <script>
+        const vm = new Vue({
+            el:"#app",
+            data:{
+                isShow:true,
+            },
+            methods:{
+                toggle:function(){
+                    this.isShow = !this.isShow;
+                }
+            }
+        })
+    </script>
+</body>
+</html>

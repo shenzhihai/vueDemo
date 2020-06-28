@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--
+    抛出问题：
+        我们通过开发者工具检查元素可知,我们的列表结构是 "ul>span>li",中间多了一个 span 标签,通过分析可知,这显示就是浏览器把 transition-group
+	    标签渲染成了 span 标签,虽然这不是大问题,也能照常使用,但是这不符合 W3C 标准
+	解决方式：
+	    1.不使用 ul 标签,我们把 ul 标签删除掉
+	    2.通过为 transition-group元素,设置 tag 属性,指定 transition-group 渲染为指定的元素.
+	注：
+	    如果我们不指定 tag 属性,则默认会将 transition-group 渲染为 span 标签
+    -->
+    <style>
+        li{
+            border:1px dashed #bfa;
+            margin:5px;
+            line-height:35px;
+            padding-left:5px;
+            font-size:20px;
+            list-style:none;
+        }
+        li:hover{
+            background-color: #bfa;
+        }
+        .v-enter,
+        .v-leave-to{
+            opacity:0;
+            transform: translateY(100px);
+        }
+        .v-enter-active,
+        .v-leave-active{
+            transition: all 0.9s ease-in-out;
+        }
+        .v-move{
+            transition: all 0.9s ease-in-out;
+        }
+        .v-leave-active{
+            position: absolute;
+        }
+    </style>
+    <script src="../JS/Vue-2.6.11.js"></script>
+</head>
+<body>
+     <div id="app">
+         <div>
+             <label>ID:<input type="text" v-model="id"></label>
+             <label>Name:<input type="text" v-model="name"></label>
+             <input type="button" value="添加" @click="add">
+         </div>
+         <!--<ul>-->
+             <transition-group appear tag="ul">
+                 <li v-for="item,index in list" :key="item.id" @click="del(index)">{{item.id}}-----{{item.name}}</li>
+             </transition-group>
+         <!--</ul>-->
+      </div>
+      <script>
+          let vm = new Vue({
+              el:"#app",
+              data:{
+                  id:"",
+                  name:"",
+                  list:[
+                      {id:1,name:"赵高"},
+                      {id:2,name:"严嵩"},
+                      {id:3,name:"秦桧"},
+                      {id:4,name:"魏忠贤"},
+                  ]
+              },
+              methods:{
+                  add(){
+                      this.list.push({id:this.id,name:this.name});
+                      this.id=this.name="";
+                  },
+                  del(index){
+                      this.list.splice(index,1);
+                  }
+              },
+          })
+      </script>
+</body>
+</html>
